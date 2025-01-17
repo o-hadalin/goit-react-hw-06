@@ -1,14 +1,14 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { changeFilter } from '../../redux/filtersSlice';
-import { selectFilterValue } from '../../redux/selectors'; // Селектор для фільтру
+import { selectFilterValue } from '../../redux/selectors';
 import styles from './SearchBox.module.css';
 
 const SearchBox = () => {
   const dispatch = useDispatch();
-  const filter = useSelector(selectFilterValue); // Отримання фільтра
+  const filter = useSelector(selectFilterValue);
 
   const handleChange = e => {
-    dispatch(changeFilter(e.target.value.toLowerCase())); // Оновлення значення фільтру
+    dispatch(changeFilter(e.target.value.toLowerCase()));
   };
 
   return (
