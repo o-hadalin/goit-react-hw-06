@@ -1,24 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import ContactForm from './components/ContactForm/ContactForm';
 import ContactList from './components/ContactList/ContactList';
 import SearchBox from './components/SearchBox/SearchBox';
 import { nanoid } from 'nanoid';
-import initialContacts from './data/contacts.json';
 import './App.css';
 
-const LOCAL_STORAGE_KEY = 'contacts';
-
 const App = () => {
-  const [contacts, setContacts] = useState(() => {
-    const savedContacts = localStorage.getItem(LOCAL_STORAGE_KEY);
-    return savedContacts ? JSON.parse(savedContacts) : initialContacts;
-  });
-
-  const [filter, setFilter] = useState('');
-
-  useEffect(() => {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(contacts));
-  }, [contacts]);
+  const dispatch = useDispatch();
+  const filter = useSelector(state => state.filters.name);
+  const contacts = useSelector(state => state.contacts.items);
 
   const addContact = newContact => {
     const duplicate = contacts.find(
@@ -30,20 +20,14 @@ const App = () => {
       return;
     }
 
-    setContacts(prevContacts => [
-      ...prevContacts,
-      { id: nanoid(), ...newContact },
-    ]);
+    dispatch({
+      type: 'contacts/add',
+      payload: { id: nanoid(), ...newContact },
+    });
   };
 
   const deleteContact = id => {
-    setContacts(prevContacts =>
-      prevContacts.filter(contact => contact.id !== id)
-    );
-  };
-
-  const handleFilterChange = event => {
-    setFilter(event.target.value.toLowerCase());
+    dispatch({ type: 'contacts/delete', payload: id });
   };
 
   const filteredContacts = contacts.filter(contact =>
@@ -55,7 +39,7 @@ const App = () => {
       <h1>Phonebook</h1>
       <ContactForm onAddContact={addContact} />
       <h2>Contacts</h2>
-      <SearchBox value={filter} onChange={handleFilterChange} />
+      <SearchBox value={filter} />{' '}
       <ContactList contacts={filteredContacts} onDelete={deleteContact} />
     </div>
   );

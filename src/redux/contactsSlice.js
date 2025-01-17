@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  items: [], // Початковий стан для контактів
+  items: [],
 };
 
 const contactsSlice = createSlice({

@@ -1,7 +1,15 @@
+import { useDispatch } from 'react-redux';
+import { changeFilter } from '../../redux/filtersSlice';
 import PropTypes from 'prop-types';
 import styles from './SearchBox.module.css';
 
-const SearchBox = ({ value, onChange }) => {
+const SearchBox = ({ value }) => {
+  const dispatch = useDispatch();
+
+  const handleChange = e => {
+    dispatch(changeFilter(e.target.value.toLowerCase()));
+  };
+
   return (
     <div className={styles.searchBox}>
       <label htmlFor="search" className={styles.label}>
@@ -12,7 +20,7 @@ const SearchBox = ({ value, onChange }) => {
         name="search"
         type="text"
         value={value}
-        onChange={onChange}
+        onChange={handleChange}
         className={styles.input}
         autoComplete="off"
       />
@@ -22,7 +30,6 @@ const SearchBox = ({ value, onChange }) => {
 
 SearchBox.propTypes = {
   value: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
 };
 
 export default SearchBox;
