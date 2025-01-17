@@ -1,13 +1,14 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { changeFilter } from '../../redux/filtersSlice';
-import PropTypes from 'prop-types';
+import { selectFilterValue } from '../../redux/selectors'; // Селектор для фільтру
 import styles from './SearchBox.module.css';
 
-const SearchBox = ({ value }) => {
+const SearchBox = () => {
   const dispatch = useDispatch();
+  const filter = useSelector(selectFilterValue); // Отримання фільтра
 
   const handleChange = e => {
-    dispatch(changeFilter(e.target.value.toLowerCase()));
+    dispatch(changeFilter(e.target.value.toLowerCase())); // Оновлення значення фільтру
   };
 
   return (
@@ -19,17 +20,13 @@ const SearchBox = ({ value }) => {
         id="search"
         name="search"
         type="text"
-        value={value}
+        value={filter}
         onChange={handleChange}
         className={styles.input}
         autoComplete="off"
       />
     </div>
   );
-};
-
-SearchBox.propTypes = {
-  value: PropTypes.string.isRequired,
 };
 
 export default SearchBox;

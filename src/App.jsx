@@ -3,12 +3,12 @@ import ContactForm from './components/ContactForm/ContactForm';
 import ContactList from './components/ContactList/ContactList';
 import SearchBox from './components/SearchBox/SearchBox';
 import { nanoid } from 'nanoid';
+import { selectFilteredContacts } from './redux/selectors';
 import './App.css';
 
 const App = () => {
   const dispatch = useDispatch();
-  const filter = useSelector(state => state.filters.name);
-  const contacts = useSelector(state => state.contacts.items);
+  const contacts = useSelector(selectFilteredContacts);
 
   const addContact = newContact => {
     const duplicate = contacts.find(
@@ -30,17 +30,13 @@ const App = () => {
     dispatch({ type: 'contacts/delete', payload: id });
   };
 
-  const filteredContacts = contacts.filter(contact =>
-    contact.name.toLowerCase().includes(filter)
-  );
-
   return (
     <div className="app">
       <h1>Phonebook</h1>
       <ContactForm onAddContact={addContact} />
       <h2>Contacts</h2>
-      <SearchBox value={filter} />{' '}
-      <ContactList contacts={filteredContacts} onDelete={deleteContact} />
+      <SearchBox />
+      <ContactList contacts={contacts} onDelete={deleteContact} />
     </div>
   );
 };
