@@ -5,14 +5,14 @@ import { combineReducers } from 'redux';
 import contactsReducer from './contactsSlice';
 import filtersReducer from './filtersSlice';
 
-const persistConfig = {
-  key: 'root',
+const contactsPersistConfig = {
+  key: 'contacts',
   storage,
-  whitelist: ['contacts'],
+  whitelist: ['items'],
 };
 
 const rootReducer = combineReducers({
-  contacts: persistReducer(persistConfig, contactsReducer),
+  contacts: persistReducer(contactsPersistConfig, contactsReducer),
   filters: filtersReducer,
 });
 
@@ -22,7 +22,6 @@ export const store = configureStore({
     getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'],
-        ignoredPaths: ['register', 'rehydrate'],
       },
     }),
 });
